@@ -1,3 +1,11 @@
+#ifndef MONTY_H
+#define MONTY_H
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -27,3 +35,11 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+
+/*	select_function.c	*/
+void read_file(char *ruta);
+
+/*        function_1.c           */
+void _push(stack_t **list, unsigned int number);
+void _pall(stack_t **list, unsigned int number);
+#endif
