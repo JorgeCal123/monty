@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
+extern int number;
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -36,10 +40,29 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+
+typedef struct args_s
+{
+	char* arg;
+        struct args_s *next;
+} args_t;
+
+
 /*	select_function.c	*/
 void read_file(char *ruta);
+void split_args(char *args, int number_line);
+void select_function(args_t *head, int number_line);
+void (*get_op_func(char *opcode))(stack_t**, unsigned int);
+
 
 /*        function_1.c           */
 void _push(stack_t **list, unsigned int number);
 void _pall(stack_t **list, unsigned int number);
+
+/*	    list.c		 */
+args_t *add(args_t **head, char *arg);
+size_t print_list(const args_t *h);
+
+
 #endif
