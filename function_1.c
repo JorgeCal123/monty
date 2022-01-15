@@ -1,9 +1,14 @@
 #include "monty.h"
 
+/**
+ * _push - add a new element to the stack
+ * @list: is the list o stack type stack_t
+ * @number: argument to add the list type int
+ */
 void _push(stack_t **list, unsigned int number)
 {
-
 	stack_t *Node = malloc(sizeof(stack_t));
+
 	if (Node == NULL)
 		exit(EXIT_FAILURE);
 	Node->n = number;
@@ -12,6 +17,11 @@ void _push(stack_t **list, unsigned int number)
 
 }
 
+/**
+ * _pall - print the element of the stack
+ * @list: is the list o stack type stack_t
+ * @number: argument to add the list type int
+ */
 void _pall(stack_t **list, unsigned int number)
 {
 
@@ -23,5 +33,4 @@ void _pall(stack_t **list, unsigned int number)
 		tmp = tmp->next;
 	}
 	(void)number;
-
 }

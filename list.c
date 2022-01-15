@@ -38,6 +38,11 @@ args_t *add(args_t **head, char *arg)
 	return (aux);
 }
 
+/**
+ * print_list - print all list args_t
+ * @h: list type argms_t
+ * Return: size of list
+ */
 
 size_t print_list(const args_t *h)
 {
