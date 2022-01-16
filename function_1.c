@@ -1,36 +1,50 @@
 #include "monty.h"
 
 /**
- * _push - add a new element to the stack
- * @list: is the list o stack type stack_t
- * @number: argument to add the list type int
+ * push - add a new element to the stack
+ * @stack: is the list o stack type stack_t
+ * @param: argument to add the list type int
  */
-void _push(stack_t **list, unsigned int number)
+void push(stack_t **stack, unsigned int param)
 {
-	stack_t *Node = malloc(sizeof(stack_t));
+	stack_t *new_node = NULL;
 
-	if (Node == NULL)
-		exit(EXIT_FAILURE);
-	Node->n = number;
-	Node->next = *list;
-	*list = Node;
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+		handle_error(ERR_BAD_MALL, NULL, 0, NULL);
 
+	new_node->n = param;
+	if (*stack)
+	{
+		new_node->next = *stack;
+		new_node->prev = (*stack)->prev;
+		(*stack)->prev = new_node;
+		*stack = new_node;
+		return;
+	}
+
+	new_node->next = *stack;
+	new_node->prev = NULL;
+	*stack = new_node;
 }
 
 /**
- * _pall - print the element of the stack
- * @list: is the list o stack type stack_t
- * @number: argument to add the list type int
+ * pall - print the element of the stack
+ * @stack: is the list o stack type stack_t
+ * @line_number: argument to add the list type int
  */
-void _pall(stack_t **list, unsigned int number)
+void pall(stack_t **stack, unsigned int line_number)
 {
+	stack_t *current = NULL;
+	(void) line_number;
 
-	stack_t *tmp = *list;
-
-	while (tmp)
+	if (*stack)
 	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->next;
+		current = *stack;
+		while (current != NULL)
+		{
+			printf("%d\n", current->n);
+			current = current->next;
+		}
 	}
-	(void)number;
 }

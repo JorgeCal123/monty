@@ -1,113 +1,115 @@
 #include "monty.h"
 
-stack_t *data = NULL;
-
 /**
- * read_file - read the file
- * @ruta: is the route to open the file
- */
-
-void read_file(char *ruta)
+  * open_file - Opens a file that have all instructions
+  * @filename: name from file
+  * Return: The file descriptor of the opened file
+  */
+FILE *open_file(char *filename)
 {
-	FILE *file_open = NULL;
-	char line[100];
-	int number_line = 1;
+	FILE *fd = NULL;
 
-	file_open = fopen(ruta, "r");
-	if (file_open == NULL)
+	check_access_rights(filename);
+
+	fd = fopen(filename, "r");
+
+	if (!fd)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", ruta);
+		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	while (fgets(line, 100, file_open) != NULL)
-	{
-		split_args(line, number_line);
-		number_line += 1;
-	}
+
+	return (fd);
 }
 
-/**
- * split_args - separate the arguments of each line
- * @args: is the line to separete
- * @number_line: number of the line
- */
-void split_args(char *args, int number_line)
-{
-	char *slip;
-	char *line = (args);
-	args_t *head = NULL;
-	(void)number_line;
 
-	while ((slip = strtok(line, " \n\t\a\b")))
-	{
-		add(&head, slip);
-		line = NULL;
-	}
-	select_function(head, number_line);
-
-}
+#include "monty.h"
 
 /**
- * select_function - choose the function to execute
- * @head: is the line to separete
- * @number_line: number of the line
- */
-void select_function(args_t *head, int number_line)
+  * handle_execution - looking for the operations to be executed
+  * @op_code: Is thecode to manage
+  * @op_param: are the instruction
+  * @line: number line that hve possible error occurred
+  * @m: method to be used by the interpreter
+  * Return: 0 if the operation was executed correctly or errcode if is invalid
+  */
+int handle_execution(char *op_code, char *op_param, unsigned int line, int m)
 {
-	void (*code_func)(stack_t **, unsigned int);
-	(void)number_line;
-	print_list(head);
-	printf("l: %d\n", number_line);
-	while (head != NULL)
-	{
+	int status_op = 0;
+	void (*oprt)(stack_t **, unsigned int);
 
-		if (strcmp(head->arg, "push") == 0)
+	if (strcmp(op_code, "stack") == 0)
+		return (METH_STACK);
+	else if (strcmp(op_code, "queue") == 0)
+		return (METH_QUEUE);
+
+	oprt = pick_func(op_code);
+	if (oprt)
+	{
+		if (strcmp(op_code, "push") == 0)
 		{
-			if ((head->next) == NULL)
-			{
-				fprintf(stderr, "L%d: usage: push integer\n",
-						number_line + 1);
-				exit(EXIT_FAILURE);
-			}
-			code_func = get_op_func("push");
-			code_func(&data, atoi((head->next)->arg));
+			status_op = check_push_param(op_param);
+			if (status_op == ERR_PUSH_USG)
+				return (ERR_PUSH_USG);
+
+			if (m != 0 && m == METH_QUEUE)
+				oprt = pick_func("push_queue");
+
+			oprt(&head, atoi(op_param));
+		}
+		else
+		{
+			oprt(&head, line);
 		}
 
-		if (strcmp(head->arg, "pall") == 0)
-		{
-			code_func = get_op_func("pall");
-			code_func(&data, 10);
-		}
-		head = head->next;
-
+		return (m);
 	}
-	/*printf("\n");*/
 
+	return (ERR_BAD_INST);
 }
 
 
-/**
- * get_op_func - Matches an opcode with its corresponding function.
- * @opcode: The opcode to match.
- *
- * Return: A pointer to the corresponding function.
- */
 
-void (*get_op_func(char *opcode))(stack_t**, unsigned int)
+/**
+  * pick_func - Select the function that relates to the Monty instruction
+  * @s: The instruction to be executed
+  *
+  * Return: A pointer to the function to be executed or
+  * NULL if the function don't exists
+  */
+void (*pick_func(char *s))(stack_t **, unsigned int)
 {
-	instruction_t op_funcs[] = {
-		{"push", _push},
-		{"pall", _pall},
-		{NULL, NULL}
+	instruction_t insts[] = {
+		{ "push", push },
+		{ "push_queue", push_queue },
+		{ "pall", pall },
+		{ "pint", pint },
+		{ "pop", pop },
+		{ "swap", swap },
+		{ "add", add },
+		{ "nop", nop },
+		{ "sub", sub },
+		{ "div", divide },
+		{ "mul", mul },
+		{ "mod", mod },
+		{ "pchar", pchar },
+		{ "pstr", pstr },
+		{ "rotl", rotl },
+		{ "rotr", rotr },
+		{ NULL, NULL }
 	};
+	int i = 0;
 
-	int i;
-
-	for (i = 0; op_funcs[i].opcode; i++)
+	while (insts[i].opcode)
 	{
-		if (strcmp(opcode, op_funcs[i].opcode) == 0)
-			return (op_funcs[i].f);
+		if (strcmp(s, insts[i].opcode) == 0)
+			return (insts[i].f);
+
+		++i;
 	}
 
 	return (NULL);
 }
+
+
+

@@ -1,58 +1,45 @@
 #include "monty.h"
 
-
 /**
- * add - add a new argument
- * @head: is the first argument
- * @arg: argument type String
- * Return: structure type args_t
- */
+  * frees_stack - Releases all elements in the stack
+  *
+  * Return: Nothing
+  */
 
-args_t *add(args_t **head, char *arg)
+void frees_stack(void)
 {
-	args_t *node,  *aux;
+	stack_t *temp = NULL;
 
-	aux = *head;
-
-	if (arg == NULL)
-		return (NULL);
-
-	node = malloc(sizeof(args_t));
-	if (node == NULL)
-		return (NULL);
-
-	node->arg = arg;
-	node->next = NULL;
-
-	if (*head == NULL)
+	if (head)
 	{
-	*head = node;
-	return (node);
+		temp = head;
+
+		while (temp)
+		{
+			head = head->next;
+			free(temp);
+			temp = head;
+		}
 	}
-
-	while (aux->next)
-		aux = aux->next;
-
-	aux->next = node;
-
-	return (aux);
 }
 
+
 /**
- * print_list - print all list args_t
- * @h: list type argms_t
- * Return: size of list
- */
-
-size_t print_list(const args_t *h)
+  * count_stack - Counts the number of elements in the stack
+  * @stack: The stack to count
+  *
+  * Return: Number of elements in the stack
+  */
+unsigned int count_stack(stack_t *stack)
 {
-	size_t elements = 0;
+	stack_t *current = stack;
+	unsigned int lenght = 0;
 
-	while (h != NULL)
+	while (current != NULL)
 	{
-		printf("%s\n", h->arg);
-		h = h->next;
-		elements++;
+		++lenght;
+		current = current->next;
 	}
-	return (elements);
+
+	return (lenght);
 }
