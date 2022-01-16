@@ -14,9 +14,9 @@ int main(int argc, char **argv)
 {
 	char *ruta;
 
-	if (argc > 2)
+	if (argc != 2)
 	{
-		printf("error de 2 archivos");
+		fprintf(stderr, "USAGE: monty file\n");
 		return (EXIT_FAILURE);
 	}
 	ruta = argv[1];

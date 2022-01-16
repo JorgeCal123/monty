@@ -14,6 +14,11 @@ void read_file(char *ruta)
 	int number_line = 1;
 
 	file_open = fopen(ruta, "r");
+	if (file_open == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", ruta);
+		exit(EXIT_FAILURE);
+	}
 	while (fgets(line, 100, file_open) != NULL)
 	{
 		split_args(line, number_line);
@@ -51,17 +56,23 @@ void select_function(args_t *head, int number_line)
 {
 	void (*code_func)(stack_t **, unsigned int);
 	(void)number_line;
-
+	print_list(head);
+	printf("l: %d\n", number_line);
 	while (head != NULL)
 	{
 
 		if (strcmp(head->arg, "push") == 0)
 		{
+			if ((head->next) == NULL)
+			{
+				fprintf(stderr, "L%d: usage: push integer\n",
+						number_line + 1);
+				exit(EXIT_FAILURE);
+			}
 			code_func = get_op_func("push");
 			code_func(&data, atoi((head->next)->arg));
 		}
 
-		/*printf("etsss %d   %s \n", strcmp(head->arg, "pall"), head->arg);*/
 		if (strcmp(head->arg, "pall") == 0)
 		{
 			code_func = get_op_func("pall");
