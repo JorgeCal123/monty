@@ -93,6 +93,8 @@ void swap(stack_t **stack, unsigned int line_number);
 
 /*		function_2.c		*/
 void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
+
 
 /*		list.c			 */
 void frees_stack(void);
