@@ -94,9 +94,27 @@ void divide(stack_t **stack, unsigned int line_number)
 }
 
 
+/**
+ * mul - handles the mul instruction
+ * @stack: double pointer to the stack to push to
+ * @line_number: number of the line in the file
+ */
+
 void mul(stack_t **stack, unsigned int line_number)
 {
-	(void) stack;
-	(void) line_number;
+
+	stack_t *temp = *stack;
+	unsigned int a = 0, b = 0, length = 0;
+
+	length = count_stack(*stack);
+
+	if (length < 2)
+		handle_error(ERR_MUL_USG, NULL, line_number, NULL);
+
+	a = temp->n;
+	b = temp->next->n;
+	temp->next->n = b * a;
+	*stack = temp->next;
+	free(temp);
 
 }
