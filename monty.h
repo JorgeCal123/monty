@@ -35,7 +35,6 @@
 #define ERR_PCH_USG		211
 #define ERR_PCH_EMP		212
 
-extern stack_t *head;
 
 
 /**
@@ -68,6 +67,8 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+extern stack_t *head;
 
 
 /*		select_function.c	*/
