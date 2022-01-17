@@ -43,6 +43,9 @@ int handle_execution(char *op_code, char *op_param, unsigned int line, int m)
 	else if (strcmp(op_code, "queue") == 0)
 		return (METH_QUEUE);
 
+	if (strcmp(op_code, "0") == 0)
+		printf("0");
+
 	oprt = pick_func(op_code);
 	if (oprt)
 	{
