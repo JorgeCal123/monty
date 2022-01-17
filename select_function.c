@@ -90,6 +90,8 @@ void (*pick_func(char *s))(stack_t **, unsigned int)
 		{ "sub", sub },
 		{ "div", divide },
 		{ "mul", mul },
+		{ "mod", mod },
+
 		{ NULL, NULL }
 	};
 	int i = 0;
