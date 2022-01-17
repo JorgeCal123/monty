@@ -23,7 +23,7 @@ int main(int argn, char *args[])
 	check_args_num(argn);
 	fd = open_file(filename);
 
-	while (fgets(buff, line_len, fd ) != NULL)
+	while (fgets(buff, line_len, fd) != NULL)
 	{
 		op_code = strtok(buff, "\t\n ");
 		if (op_code)

@@ -84,7 +84,7 @@ int check_push_param(char *param);
 int check_digits(char *s);
 
 
-/*        	function_1.c           */
+/*		function_1.c           */
 void push(stack_t **stack, unsigned int param);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
